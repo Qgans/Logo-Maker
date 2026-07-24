@@ -2,26 +2,28 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Pro Logo Maker</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Bebas+Neue&family=Black+Ops+One&family=Bungee+Outline&family=Cinzel+Decorative:wght@700&family=Creepster&family=Faster+One&family=Megrim&family=Monofett&family=Monoton&family=Montserrat:wght@900&family=Nosifer&family=Plaster&family=Playfair+Display:ital,wght@1,900&family=Righteous&family=Russo+One&family=Syncopate:wght@700&family=Wallpoet&display=swap');
+
+  * { box-sizing: border-box; }
 
   body { 
     font-family: sans-serif; 
     background: #121212; 
     color: #fff;
     margin: 0; 
-    padding: 20px; 
+    padding: 10px; 
     display: flex; 
     flex-direction: column; 
     align-items: center; 
     touch-action: none; 
     min-height: 100vh;
-    box-sizing: border-box;
+    justify-content: center;
   }
 
-  /* Стили заставки */
   #splash-screen {
     position: fixed;
     top: 0;
@@ -39,7 +41,7 @@
   
   #splash-screen h1 {
     font-family: 'Syncopate', sans-serif;
-    font-size: 28px;
+    font-size: 24px;
     margin: 0;
     text-align: center;
     letter-spacing: 2px;
@@ -47,21 +49,22 @@
   
   #splash-screen p {
     font-family: 'Montserrat', sans-serif;
-    font-size: 14px;
+    font-size: 12px;
     color: #ff4757;
-    margin-top: 10px;
+    margin-top: 8px;
     letter-spacing: 1px;
+    text-align: center;
   }
 
   #workspace { 
-    width: 320px; 
-    height: 320px; 
-    background: white; 
-    border-radius: 12px; 
-    box-shadow: 0 4px 20px rgba(0,0,0,0.5); 
+    width: 280px; 
+    height: 280px; 
+    background: #ffffff; 
+    border-radius: 10px; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5); 
     position: relative; 
     overflow: hidden; 
-    margin-bottom: 20px;
+    margin-bottom: 12px;
     flex-shrink: 0;
   }
 
@@ -70,11 +73,10 @@
     line-height: 1; 
     user-select: none; 
     cursor: grab; 
-    color: #1a1a1a; 
-    top: 80px;
+    top: 70px;
     transform-origin: center center;
-    padding: 10px; 
-    margin: -10px;
+    padding: 6px; 
+    margin: -6px;
   }
 
   .active {
@@ -82,65 +84,141 @@
     z-index: 100;
   }
 
-  #l1 { left: 50px; }
-  #l2 { left: 150px; }
+  #l1 { left: 40px; }
+  #l2 { left: 130px; }
 
   .controls { 
     width: 100%; 
-    max-width: 320px; 
+    max-width: 280px; 
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 8px;
+    position: relative;
   }
 
-  .input-row { display: flex; gap: 10px; }
+  /* Кружок смены языка в левом верхнем углу */
+  #lang-btn {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #2f3542;
+    color: #fff;
+    border: 2px solid #57606f;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    z-index: 10;
+  }
+
+  #lang-btn:active {
+    background: #57606f;
+  }
+
+  .input-row { display: flex; gap: 6px; align-items: center; }
+  
+  .bg-panel {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    background: #2f3542;
+    padding: 4px 8px;
+    border-radius: 6px;
+  }
+
+  .bg-label {
+    font-size: 10px;
+    font-weight: bold;
+    color: #a4b0be;
+    margin-right: 2px;
+  }
   
   input[type="text"], select { 
-    padding: 10px; 
+    padding: 6px 8px; 
     border: none; 
-    border-radius: 6px; 
-    font-size: 14px; 
+    border-radius: 5px; 
+    font-size: 11px; 
     background: #2f3542;
     color: white;
     outline: none;
+    height: 30px;
+    box-sizing: border-box;
   }
   
   input[type="text"] { 
-    width: 40px; 
+    width: 32px; 
     text-align: center; 
     text-transform: uppercase; 
     font-weight: bold;
+    font-size: 14px;
   }
   
-  select { flex-grow: 1; cursor: pointer; }
+  select { flex-grow: 1; cursor: pointer; font-size: 10px; padding: 4px 6px; height: 30px; }
+
+  input[type="color"] {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border: none;
+    border-radius: 5px;
+    background: #2f3542;
+    cursor: pointer;
+    box-sizing: border-box;
+    flex-shrink: 0;
+  }
+  
+  input[type="color"]::-webkit-color-swatch-wrapper { padding: 2px; }
+  input[type="color"]::-webkit-color-swatch { border-radius: 3px; border: none; }
+
+  .upload-label {
+    flex-grow: 1;
+    background: #f1f2f6;
+    color: #2f3542;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 9px;
+    font-weight: bold;
+    height: 30px;
+  }
+
+  .upload-label:active { background: #dfe4ea; }
 
   .btn-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
+    gap: 5px;
   }
 
   .global-actions {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 8px;
+    gap: 5px;
   }
 
   button {
     background: #f1f2f6;
     color: #2f3542;
     border: none;
-    padding: 12px 5px;
-    border-radius: 8px;
+    padding: 6px 4px;
+    border-radius: 6px;
     font-weight: bold;
-    font-size: 12px;
+    font-size: 10px;
     cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    height: 30px;
   }
 
   button:active {
     background: #dfe4ea;
-    transform: translateY(2px);
+    transform: translateY(1px);
   }
 
   .action-btn { background: #eccc68; }
@@ -149,30 +227,62 @@
   .export-btn {
     background: #ff4757;
     color: white;
-    font-size: 14px;
-    padding: 15px;
-    margin-top: 5px;
+    font-size: 13px;
+    padding: 8px;
+    margin-top: 3px;
+    height: 34px;
+    border-radius: 8px;
   }
   
   .export-btn:active {
     background: #ff6b81;
   }
 
-  #hint {
-    display: none;
-    color: #888;
-    font-size: 14px;
-    margin-top: 20px;
+  #export-modal {
+    display: none; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 10000;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  #export-modal p {
+    color: #fff;
+    font-family: 'Montserrat', sans-serif;
+    margin-bottom: 15px;
     text-align: center;
+    font-size: 14px;
+  }
+
+  #exported-img {
+    max-width: 90%;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    margin-bottom: 20px;
+  }
+
+  .close-btn {
+    background: #2f3542;
+    color: white;
+    padding: 12px 24px;
+    font-size: 12px;
+    height: auto;
   }
 </style>
 </head>
 <body>
 
-<!-- Заставка -->
 <div id="splash-screen">
   <h1>LOGO CREATOR</h1>
-  <p>BY QGANS</p>
+  <p>BY QGANS<br><span style="font-size: 10px; opacity: 0.7; color: #fff;">VERSION 2.0</span></p>
 </div>
 
 <div id="workspace">
@@ -180,68 +290,82 @@
   <div id="l2" class="letter">S</div>
 </div>
 
-<div class="controls" id="controls-panel">
+<div class="controls">
+  <!-- Кружок смены языка в правом верхнем углу -->
+  <button id="lang-btn" onclick="toggleLang()">EN</button>
+
+  <div class="bg-panel">
+    <span class="bg-label i18n" data-ru="ФОН" data-en="BG">ФОН</span>
+    <input type="color" id="bgColor" value="#ffffff">
+    <label class="upload-label i18n" data-ru="КАРТИНКА" data-en="IMAGE">КАРТИНКА</label>
+    <input type="file" id="bgImage" accept="image/*" style="display: none;">
+    <button onclick="clearBgImage()" class="i18n" data-ru="СБРОС" data-en="RESET" style="padding: 0 8px; height: 30px; font-size: 9px;">СБРОС</button>
+  </div>
+
   <div class="input-row">
     <input type="text" id="input1" value="B" maxlength="1">
     <select id="font1">
-      <optgroup label="Базовые">
-        <option value="'Montserrat', sans-serif">Строгий (Montserrat)</option>
-        <option value="'Bebas Neue', sans-serif">Высокий (Bebas)</option>
-        <option value="'Playfair Display', serif">Классика (Playfair)</option>
+      <optgroup class="i18n" data-ru="Базовые" data-en="Basic" label="Базовые">
+        <option value="'Montserrat', sans-serif" class="i18n" data-ru="Строгий" data-en="Strict">Строгий</option>
+        <option value="'Bebas Neue', sans-serif" class="i18n" data-ru="Высокий" data-en="Tall">Высокий</option>
+        <option value="'Playfair Display', serif" class="i18n" data-ru="Классика" data-en="Classic">Классика</option>
       </optgroup>
-      <optgroup label="Логотипные">
-        <option value="'Syncopate', sans-serif">Широкий (Syncopate)</option>
-        <option value="'Black Ops One', system-ui">Трафарет (Black Ops)</option>
-        <option value="'Audiowide', sans-serif">Техно (Audiowide)</option>
-        <option value="'Righteous', cursive">Плавный (Righteous)</option>
-        <option value="'Russo One', sans-serif">Монолит (Russo One)</option>
-        <option value="'Cinzel Decorative', serif">Элитный (Cinzel)</option>
+      <optgroup class="i18n" data-ru="Логотипные" data-en="Logotype" label="Логотипные">
+        <option value="'Syncopate', sans-serif" class="i18n" data-ru="Широкий" data-en="Wide">Широкий</option>
+        <option value="'Black Ops One', system-ui" class="i18n" data-ru="Трафарет" data-en="Stencil">Трафарет</option>
+        <option value="'Audiowide', sans-serif" class="i18n" data-ru="Техно" data-en="Techno">Техно</option>
+        <option value="'Righteous', cursive" class="i18n" data-ru="Плавный" data-en="Smooth">Плавный</option>
+        <option value="'Russo One', sans-serif" class="i18n" data-ru="Монолит" data-en="Monolith">Монолит</option>
+        <option value="'Cinzel Decorative', serif" class="i18n" data-ru="Элитный" data-en="Elite">Элитный</option>
       </optgroup>
-      <optgroup label="Необычные">
-        <option value="'Megrim', system-ui">Абстракция (Megrim)</option>
-        <option value="'Plaster', system-ui">Трафарет 2 (Plaster)</option>
-        <option value="'Bungee Outline', cursive">Контур (Bungee)</option>
-        <option value="'Faster One', system-ui">Скорость (Faster)</option>
-        <option value="'Wallpoet', system-ui">Урбан (Wallpoet)</option>
-        <option value="'Monofett', cursive">Линии (Monofett)</option>
-        <option value="'Monoton', cursive">Неоновый (Monoton)</option>
+      <optgroup class="i18n" data-ru="Необычные" data-en="Unusual" label="Необычные">
+        <option value="'Megrim', system-ui" class="i18n" data-ru="Абстракция" data-en="Abstract">Абстракция</option>
+        <option value="'Plaster', system-ui" class="i18n" data-ru="Трафарет 2" data-en="Stencil 2">Трафарет 2</option>
+        <option value="'Bungee Outline', cursive" class="i18n" data-ru="Контур" data-en="Outline">Контур</option>
+        <option value="'Faster One', system-ui" class="i18n" data-ru="Скорость" data-en="Speed">Скорость</option>
+        <option value="'Wallpoet', system-ui" class="i18n" data-ru="Урбан" data-en="Urban">Урбан</option>
+        <option value="'Monofett', cursive" class="i18n" data-ru="Линии" data-en="Lines">Линии</option>
+        <option value="'Monoton', cursive" class="i18n" data-ru="Неоновый" data-en="Neon">Неоновый</option>
       </optgroup>
-      <optgroup label="Дичь">
-        <option value="'Creepster', cursive">Ужасы (Creepster)</option>
-        <option value="'Nosifer', cursive">Хоррор (Nosifer)</option>
+      <optgroup class="i18n" data-ru="Дичь" data-en="Crazy" label="Дичь">
+        <option value="'Creepster', cursive" class="i18n" data-ru="Ужасы" data-en="Creepy">Ужасы</option>
+        <option value="'Nosifer', cursive" class="i18n" data-ru="Хоррор" data-en="Horror">Хоррор</option>
       </optgroup>
     </select>
+    <input type="color" id="color1" value="#1a1a1a">
   </div>
+
   <div class="input-row">
     <input type="text" id="input2" value="S" maxlength="1">
     <select id="font2">
-      <optgroup label="Базовые">
-        <option value="'Montserrat', sans-serif">Строгий (Montserrat)</option>
-        <option value="'Bebas Neue', sans-serif">Высокий (Bebas)</option>
-        <option value="'Playfair Display', serif">Классика (Playfair)</option>
+      <optgroup class="i18n" data-ru="Базовые" data-en="Basic" label="Базовые">
+        <option value="'Montserrat', sans-serif" class="i18n" data-ru="Строгий" data-en="Strict">Строгий</option>
+        <option value="'Bebas Neue', sans-serif" class="i18n" data-ru="Высокий" data-en="Tall">Высокий</option>
+        <option value="'Playfair Display', serif" class="i18n" data-ru="Классика" data-en="Classic">Классика</option>
       </optgroup>
-      <optgroup label="Логотипные">
-        <option value="'Syncopate', sans-serif">Широкий (Syncopate)</option>
-        <option value="'Black Ops One', system-ui">Трафарет (Black Ops)</option>
-        <option value="'Audiowide', sans-serif">Техно (Audiowide)</option>
-        <option value="'Righteous', cursive">Плавный (Righteous)</option>
-        <option value="'Russo One', sans-serif">Монолит (Russo One)</option>
-        <option value="'Cinzel Decorative', serif">Элитный (Cinzel)</option>
+      <optgroup class="i18n" data-ru="Логотипные" data-en="Logotype" label="Логотипные">
+        <option value="'Syncopate', sans-serif" class="i18n" data-ru="Широкий" data-en="Wide">Широкий</option>
+        <option value="'Black Ops One', system-ui" class="i18n" data-ru="Трафарет" data-en="Stencil">Трафарет</option>
+        <option value="'Audiowide', sans-serif" class="i18n" data-ru="Техно" data-en="Techno">Техно</option>
+        <option value="'Righteous', cursive" class="i18n" data-ru="Плавный" data-en="Smooth">Плавный</option>
+        <option value="'Russo One', sans-serif" class="i18n" data-ru="Монолит" data-en="Monolith">Монолит</option>
+        <option value="'Cinzel Decorative', serif" class="i18n" data-ru="Элитный" data-en="Elite">Элитный</option>
       </optgroup>
-      <optgroup label="Необычные">
-        <option value="'Megrim', system-ui">Абстракция (Megrim)</option>
-        <option value="'Plaster', system-ui">Трафарет 2 (Plaster)</option>
-        <option value="'Bungee Outline', cursive">Контур (Bungee)</option>
-        <option value="'Faster One', system-ui">Скорость (Faster)</option>
-        <option value="'Wallpoet', system-ui">Урбан (Wallpoet)</option>
-        <option value="'Monofett', cursive">Линии (Monofett)</option>
-        <option value="'Monoton', cursive">Неоновый (Monoton)</option>
+      <optgroup class="i18n" data-ru="Необычные" data-en="Unusual" label="Необычные">
+        <option value="'Megrim', system-ui" class="i18n" data-ru="Абстракция" data-en="Abstract">Абстракция</option>
+        <option value="'Plaster', system-ui" class="i18n" data-ru="Трафарет 2" data-en="Stencil 2">Трафарет 2</option>
+        <option value="'Bungee Outline', cursive" class="i18n" data-ru="Контур" data-en="Outline">Контур</option>
+        <option value="'Faster One', system-ui" class="i18n" data-ru="Скорость" data-en="Speed">Скорость</option>
+        <option value="'Wallpoet', system-ui" class="i18n" data-ru="Урбан" data-en="Urban">Урбан</option>
+        <option value="'Monofett', cursive" class="i18n" data-ru="Линии" data-en="Lines">Линии</option>
+        <option value="'Monoton', cursive" class="i18n" data-ru="Неоновый" data-en="Neon">Неоновый</option>
       </optgroup>
-      <optgroup label="Дичь">
-        <option value="'Creepster', cursive">Ужасы (Creepster)</option>
-        <option value="'Nosifer', cursive">Хоррор (Nosifer)</option>
+      <optgroup class="i18n" data-ru="Дичь" data-en="Crazy" label="Дичь">
+        <option value="'Creepster', cursive" class="i18n" data-ru="Ужасы" data-en="Creepy">Ужасы</option>
+        <option value="'Nosifer', cursive" class="i18n" data-ru="Хоррор" data-en="Horror">Хоррор</option>
       </optgroup>
     </select>
+    <input type="color" id="color2" value="#1a1a1a">
   </div>
 
   <div class="btn-grid">
@@ -254,77 +378,114 @@
   </div>
   
   <div class="global-actions">
-    <button class="action-btn" onclick="selectAll()">ВЫБРАТЬ ВСЁ</button>
-    <button class="action-btn" onclick="centerLogo()">В ЦЕНТР</button>
+    <button class="action-btn i18n" data-ru="ВЫБРАТЬ ВСЁ" data-en="SELECT ALL" onclick="selectAll()">ВЫБРАТЬ ВСЁ</button>
+    <button class="action-btn i18n" data-ru="В ЦЕНТР" data-en="CENTER" onclick="centerLogo()">В ЦЕНТР</button>
   </div>
 
-  <button class="export-btn" onclick="prepareForScreenshot()">ПОДГОТОВИТЬ К СКРИНШОТУ</button>
+  <button class="export-btn i18n" id="exportBtn" data-ru="СОЗДАТЬ КАРТИНКУ" data-en="GENERATE IMAGE" onclick="generateImage()">СОЗДАТЬ КАРТИНКУ</button>
 </div>
 
-<div id="hint">Делай скриншот.<br>Тапни здесь или по черному фону, чтобы вернуть меню.</div>
+<div id="export-modal">
+  <p class="i18n" data-ru="Готово! Зажми картинку пальцем<br>и выбери «Сохранить изображение»" data-en="Done! Long press the image<br>and select «Save Image»">Готово! Зажми картинку пальцем<br>и выбери «Сохранить изображение»</p>
+  <img id="exported-img" src="" alt="Logo">
+  <button class="close-btn i18n" data-ru="ЗАКРЫТЬ" data-en="CLOSE" onclick="closeModal()">ЗАКРЫТЬ</button>
+</div>
 
 <script>
-  // Логика заставки
   window.addEventListener('load', () => {
     setTimeout(() => {
       const splash = document.getElementById('splash-screen');
-      splash.style.opacity = '0'; // Плавно делаем прозрачным
-      setTimeout(() => {
-        splash.style.display = 'none'; // Полностью убираем, чтобы не мешало кликать
-      }, 600); // Ждем пока закончится анимация прозрачности (соответствует CSS transition)
-    }, 2000); // 2 секунды показа
+      splash.style.opacity = '0';
+      setTimeout(() => { splash.style.display = 'none'; }, 600);
+    }, 1800);
   });
 
-  const state = {
-    l1: { size: 140, rot: 0, flipH: 1, flipV: 1, family: "'Montserrat', sans-serif" },
-    l2: { size: 140, rot: 0, flipH: 1, flipV: 1, family: "'Montserrat', sans-serif" }
+  let currentLang = 'ru';
+
+  window.toggleLang = function() {
+    currentLang = currentLang === 'ru' ? 'en' : 'ru';
+    const langBtn = document.getElementById('lang-btn');
+    langBtn.textContent = currentLang === 'ru' ? 'EN' : 'RU';
+
+    document.querySelectorAll('.i18n').forEach(el => {
+      if (el.tagName === 'OPTGROUP') {
+        el.label = el.getAttribute('data-' + currentLang);
+      } else {
+        el.innerHTML = el.getAttribute('data-' + currentLang);
+      }
+    });
   };
 
-  let activeId = 'l1'; 
+  const state = {
+    l1: { size: 120, rot: 0, flipH: 1, flipV: 1, family: "'Montserrat', sans-serif", color: "#1a1a1a" },
+    l2: { size: 120, rot: 0, flipH: 1, flipV: 1, family: "'Montserrat', sans-serif", color: "#1a1a1a" }
+  };
 
+  let activeId = 'l1';
   const l1 = document.getElementById('l1');
   const l2 = document.getElementById('l2');
   const workspace = document.getElementById('workspace');
-  const controlsPanel = document.getElementById('controls-panel');
-  const hint = document.getElementById('hint');
-  
-  updateStyle('l1');
-  updateStyle('l2');
+  const bgColorInput = document.getElementById('bgColor');
+  const bgImageInput = document.getElementById('bgImage');
+
+  bgColorInput.addEventListener('input', (e) => {
+    workspace.style.backgroundColor = e.target.value;
+    workspace.style.backgroundImage = 'none';
+  });
+
+  bgImageInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        workspace.style.backgroundImage = `url(${event.target.result})`;
+        workspace.style.backgroundSize = 'cover';
+        workspace.style.backgroundPosition = 'center';
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // При клике на КАРТИНКА открываем выбор файла
+  document.querySelector('.upload-label').addEventListener('click', function() {
+    document.getElementById('bgImage').click();
+  });
+
+  window.clearBgImage = function() {
+    workspace.style.backgroundImage = 'none';
+    workspace.style.backgroundColor = bgColorInput.value;
+    bgImageInput.value = '';
+  };
 
   function updateStyle(id) {
     const el = document.getElementById(id);
     const s = state[id];
     el.style.fontSize = s.size + 'px';
     el.style.fontFamily = s.family;
+    el.style.color = s.color;
     el.style.transform = `rotate(${s.rot}deg) scale(${s.flipH}, ${s.flipV})`;
   }
 
+  updateStyle('l1'); updateStyle('l2');
+
   document.getElementById('input1').addEventListener('input', (e) => l1.textContent = e.target.value.toUpperCase());
   document.getElementById('input2').addEventListener('input', (e) => l2.textContent = e.target.value.toUpperCase());
-
   document.getElementById('font1').addEventListener('change', (e) => { state.l1.family = e.target.value; updateStyle('l1'); });
   document.getElementById('font2').addEventListener('change', (e) => { state.l2.family = e.target.value; updateStyle('l2'); });
+  document.getElementById('color1').addEventListener('input', (e) => { state.l1.color = e.target.value; updateStyle('l1'); });
+  document.getElementById('color2').addEventListener('input', (e) => { state.l2.color = e.target.value; updateStyle('l2'); });
 
   function setActive(id) {
     activeId = id;
-    l1.classList.remove('active');
-    l2.classList.remove('active');
-    
-    if (id === 'all') {
-      l1.classList.add('active');
-      l2.classList.add('active');
-    } else {
-      document.getElementById(id).classList.add('active');
-    }
+    l1.classList.remove('active'); l2.classList.remove('active');
+    if (id === 'all') { l1.classList.add('active'); l2.classList.add('active'); } 
+    else { document.getElementById(id).classList.add('active'); }
   }
 
-  window.selectAll = function() {
-    setActive('all');
-  };
+  window.selectAll = function() { setActive('all'); };
 
   window.applyAction = function(action, val) {
     const targets = activeId === 'all' ? ['l1', 'l2'] : [activeId];
-    
     targets.forEach(id => {
       const s = state[id];
       if (action === 'rot') s.rot += val;
@@ -339,21 +500,12 @@
     const r1 = l1.getBoundingClientRect();
     const r2 = l2.getBoundingClientRect();
     const w = workspace.getBoundingClientRect();
-    
     const minX = Math.min(r1.left, r2.left) - w.left;
     const minY = Math.min(r1.top, r2.top) - w.top;
     const maxX = Math.max(r1.right, r2.right) - w.left;
     const maxY = Math.max(r1.bottom, r2.bottom) - w.top;
-
-    const currentCX = (minX + maxX) / 2;
-    const currentCY = (minY + maxY) / 2;
-
-    const targetCX = w.width / 2;
-    const targetCY = w.height / 2;
-
-    const dx = targetCX - currentCX;
-    const dy = targetCY - currentCY;
-
+    const dx = (w.width / 2) - ((minX + maxX) / 2);
+    const dy = (w.height / 2) - ((minY + maxY) / 2);
     l1.style.left = (l1.offsetLeft + dx) + 'px';
     l1.style.top = (l1.offsetTop + dy) + 'px';
     l2.style.left = (l2.offsetLeft + dx) + 'px';
@@ -364,53 +516,32 @@
     let isDragging = false, isMoved = false, startX, startY, initX1, initY1, initX2, initY2;
 
     function start(e) {
-      isDragging = true;
-      isMoved = false; 
+      isDragging = true; isMoved = false;
       let clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
       let clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
-      startX = clientX;
-      startY = clientY;
-      
-      initX1 = l1.offsetLeft;
-      initY1 = l1.offsetTop;
-      initX2 = l2.offsetLeft;
-      initY2 = l2.offsetTop;
-      
+      startX = clientX; startY = clientY;
+      initX1 = l1.offsetLeft; initY1 = l1.offsetTop;
+      initX2 = l2.offsetLeft; initY2 = l2.offsetTop;
       el.style.cursor = 'grabbing';
-      
-      if (activeId !== 'all') {
-        setActive(id);
-      }
+      if (activeId !== 'all') setActive(id);
     }
 
     function move(e) {
       if (!isDragging) return;
       let clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
       let clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
-      
-      let dx = clientX - startX;
-      let dy = clientY - startY;
-
-      if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
-        isMoved = true;
-      }
-
-      if (!isMoved) return; 
-
-      e.preventDefault(); 
-      
+      let dx = clientX - startX, dy = clientY - startY;
+      if (Math.abs(dx) < 3 && Math.abs(dy) < 3) return;
+      isMoved = true;
+      e.preventDefault();
       if (activeId === 'all') {
-        l1.style.left = (initX1 + dx) + 'px';
-        l1.style.top = (initY1 + dy) + 'px';
-        l2.style.left = (initX2 + dx) + 'px';
-        l2.style.top = (initY2 + dy) + 'px';
+        l1.style.left = (initX1 + dx) + 'px'; l1.style.top = (initY1 + dy) + 'px';
+        l2.style.left = (initX2 + dx) + 'px'; l2.style.top = (initY2 + dy) + 'px';
       } else {
         let targetEl = id === 'l1' ? l1 : l2;
         let initX = id === 'l1' ? initX1 : initX2;
         let initY = id === 'l1' ? initY1 : initY2;
-        
-        targetEl.style.left = (initX + dx) + 'px';
-        targetEl.style.top = (initY + dy) + 'px';
+        targetEl.style.left = (initX + dx) + 'px'; targetEl.style.top = (initY + dy) + 'px';
       }
     }
 
@@ -418,47 +549,50 @@
       if (!isDragging) return;
       isDragging = false;
       el.style.cursor = 'grab';
-
-      if (!isMoved) {
-        setActive(id);
-      }
+      if (!isMoved) setActive(id);
     }
 
-    el.addEventListener('mousedown', start);
-    document.addEventListener('mousemove', move);
+    el.addEventListener('mousedown', start); 
+    document.addEventListener('mousemove', move); 
     document.addEventListener('mouseup', end);
-    el.addEventListener('touchstart', start, {passive: false});
-    document.addEventListener('touchmove', move, {passive: false});
+    el.addEventListener('touchstart', start, {passive: false}); 
+    document.addEventListener('touchmove', move, {passive: false}); 
     document.addEventListener('touchend', end);
   }
 
   makeDraggable(l1, 'l1');
   makeDraggable(l2, 'l2');
 
-  window.prepareForScreenshot = function() {
+  window.generateImage = function() {
+    const btn = document.getElementById('exportBtn');
+    const originalText = btn.innerHTML;
+    btn.textContent = currentLang === 'ru' ? 'ОБРАБОТКА...' : 'PROCESSING...';
+    
     const l1WasActive = l1.classList.contains('active');
     const l2WasActive = l2.classList.contains('active');
     l1.classList.remove('active');
     l2.classList.remove('active');
 
-    controlsPanel.style.display = 'none';
-    hint.style.display = 'block';
+    html2canvas(workspace, {
+      backgroundColor: null,
+      scale: 3,
+      useCORS: true,
+      allowTaint: true
+    }).then(canvas => {
+      document.getElementById('exported-img').src = canvas.toDataURL('image/png');
+      document.getElementById('export-modal').style.display = 'flex';
+      btn.innerHTML = originalText;
+      if (l1WasActive) l1.classList.add('active');
+      if (l2WasActive) l2.classList.add('active');
+    }).catch(() => {
+      alert(currentLang === 'ru' ? 'Ошибка при создании картинки.' : 'Error generating image.');
+      btn.innerHTML = originalText;
+    });
+  };
 
-    function restoreUI(e) {
-      if (!workspace.contains(e.target)) {
-        controlsPanel.style.display = 'flex';
-        hint.style.display = 'none';
-        
-        if (l1WasActive) l1.classList.add('active');
-        if (l2WasActive) l2.classList.add('active');
-        
-        document.removeEventListener('pointerdown', restoreUI);
-      }
-    }
-
-    setTimeout(() => {
-      document.addEventListener('pointerdown', restoreUI);
-    }, 100);
+  window.closeModal = function() {
+    document.getElementById('export-modal').style.display = 'none';
+    document.getElementById('exported-img').src = '';
   };
 </script>
 </body>
